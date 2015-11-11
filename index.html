@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Snake</title>
+	<link rel="stylesheet" type="text/css" href="./src/snake.css">
+</head>
+<body>
+	<div id="main">
+		<div id="content" tabIndex="0"></div>
+	</div>
+</body>
+<script src="./src/lib/seajs/sea.js"></script>
+<script type="text/javascript">
+	seajs.config({
+		base: "./src",
+		alias: {
+			"jquery": "lib/jquery/1.10.1/jquery.js"
+		}
+	});
+
+	seajs.use("./src/main");
+</script>
+</html>
