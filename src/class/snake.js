@@ -8,33 +8,35 @@ define(function(require, exports, module){
 		this.running = false;
 		this.knockedFlag = false;
 		this.direction = 0;
-		this.speed = 300;
-		this.moveInterval = null;
+		this.speedLevel = 3;
 	}
 
 	module.exports = Snake;
 
 	Snake.prototype.add = function(x, y){
+		var me = this;
 		var snode = new Snode(x, y);
 		snode.el.addClass("snake-body");
-		this.body.push(snode);
+		me.body.push(snode);
 	};
 
 
 	Snake.prototype.addHead = function(x, y){
+		var me = this;
 		var snode = new Snode(x, y);
-		if(this.body.length>0){
-			this.body[0].el.removeClass("snake-head");
+		if(me.body.length>0){
+			me.body[0].el.removeClass("snake-head");
 		}
 		snode.el.addClass("snake-body snake-head");
-		this.body.unshift(snode);
+		me.body.unshift(snode);
 	};
 
 	Snake.prototype.removeTail = function(){
-		if(this.body.length > 1){
-			var tail = this.body[this.body.length-1];
+		var me = this;
+		if(me.body.length > 1){
+			var tail = me.body[me.body.length-1];
 			tail.destory();
-			this.body.pop();
+			me.body.pop();
 		}
 	};
 
@@ -49,6 +51,7 @@ define(function(require, exports, module){
 		var me = this;
 		if(food instanceof Food){
 			me.addHead(food.node.x, food.node.y);
+			sessionStorage.SNAKEOBJ = JSON.stringify(me);
 			food.refresh();
 		}
 	};
@@ -89,9 +92,6 @@ define(function(require, exports, module){
 			for (var i = 0; i < me.body.length; i++) {
 				me.body[i].destory();
 			};
-		}
-		if(me.moveInterval){
-			clearInterval(me.moveInterval);
 		}
 
 	};

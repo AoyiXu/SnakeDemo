@@ -5,7 +5,9 @@ define(function(require, exports, module){
 		NODE_WIDTH	: 20,
 		NODE_HEIGHT	: 20,
 
-		SPEED_LEVEL	: 1,
+		SPEED_LEVEL	: [1,5],
+		SPEED_LEVEL_MS	: [1000,500,300,200,100],
+		
 		BODY_LIMIT	: 10
 	}
 })

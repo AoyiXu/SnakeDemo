@@ -24,6 +24,12 @@ define(function(require, exports, module){
 		return new Array(fx, fy);
 	}
 
+	function getSpeedByLevel(level){
+		var tmpConfig = config;
+		return tmpConfig.SPEED_LEVEL_MS[level-1];
+	}
+
 	exports.effectiveArea = effectiveArea;
 	exports.initialNodePosition = initialNodePosition;
+	exports.getSpeedByLevel = getSpeedByLevel;
 })

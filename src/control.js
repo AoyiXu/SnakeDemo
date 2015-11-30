@@ -8,6 +8,8 @@ define(function(require, exports, module){
 	module.exports = {
 		snake : null,
 		food : null,
+		moveInterval : null,
+		speed : null,
 
 		init : function(){
 			var me = this;
@@ -30,6 +32,8 @@ define(function(require, exports, module){
 			sessionStorage.SNAKEOBJ = JSON.stringify(snake);
 
 			me.food = new Food();
+			me.food.create();
+			
 			me._bindUI();
 			$('#content').focus();
 		},
@@ -105,6 +109,13 @@ define(function(require, exports, module){
 					} else {
 						me.start();
 					}
+				} else if (e.keyCode === 33){
+					// page up
+					me.speedUp();
+					
+				} else if (e.keyCode === 34){
+					// page up
+					me.speedDown();
 				}
 			});
 		},
@@ -112,9 +123,9 @@ define(function(require, exports, module){
 		start : function(){
 			var me = this;
 			var snake = me.snake;
-			if(!snake.moveInterval){
-				snake.moveInterval = setInterval(function(){
-
+			if(!me.moveInterval){
+				me.speed = utils.getSpeedByLevel(snake.speedLevel);
+				me.moveInterval = setInterval(function(){
 					var nextPosition = snake._getNextPosition();
 					// border check
 					var eArea = utils.effectiveArea;
@@ -135,13 +146,11 @@ define(function(require, exports, module){
 
 					if(nextPosition.x === me.food.node.x 
 						&& nextPosition.y === me.food.node.y){
-						sessionStorage.SNAKEOBJ = JSON.stringify(snake);
 						snake.eat(me.food);
 					} else {
 						snake.move();
 					}
-
-				}, snake.speed);
+				}, me.speed);
 			}
 			snake.running = true;
 		},
@@ -149,9 +158,9 @@ define(function(require, exports, module){
 		stop : function(){
 			var me = this;
 			var snake = me.snake;
-			if(snake.moveInterval){
-				clearInterval(snake.moveInterval);
-				snake.moveInterval = null;
+			if(me.moveInterval){
+				clearInterval(me.moveInterval);
+				me.moveInterval = null;
 			}
 			snake.running = false;
 		},
@@ -161,6 +170,36 @@ define(function(require, exports, module){
 			me.stop();
 			alert("Game Over!");
 			me.init();
+		},
+
+		speedUp : function(){
+			var me = this;
+			if(!me.snake){
+				return;
+			}
+			var speedLevelMax = config.SPEED_LEVEL[1];
+			if(me.snake.speedLevel < speedLevelMax){
+				me.snake.speedLevel += 1;
+				if(me.snake.running){
+					me.stop();
+					me.start();
+				}
+			}
+		},
+
+		speedDown : function(){
+			var me = this;
+			if(!me.snake){
+				return;
+			}
+			var speedLevelMin = config.SPEED_LEVEL[0];
+			if(me.snake.speedLevel > speedLevelMin){
+				me.snake.speedLevel -= 1;
+				if(me.snake.running){
+					me.stop();
+					me.start();
+				}
+			}
 		}
 	}
 })

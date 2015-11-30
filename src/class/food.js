@@ -7,8 +7,6 @@ define(function(require, exports, module){
 
 	function Food(){
 		this.node = null;
-
-		this.create();
 	}
 
 	Food.prototype.create = function(){
